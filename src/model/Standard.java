@@ -4,7 +4,7 @@ import java.util.Calendar;
 import java.util.ArrayList;
 
 //* */
-public class Standard  extends Consumer implements Editplaylist,CreatePlaylist{
+public class Standard  extends Consumer{
     private Playlist[] playlist;
 
     public Standard(String nickname, String id, Calendar bondingdate) {

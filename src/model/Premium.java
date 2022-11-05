@@ -4,7 +4,7 @@ import java.util.Calendar;
 
 import java.util.ArrayList;
 //* */
-public class Premium extends Consumer implements Editplaylist,CreatePlaylist{
+public class Premium extends Consumer {
 
     private ArrayList <Playlist> playlist;
 
