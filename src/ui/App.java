@@ -33,7 +33,7 @@ public class App{
         boolean val = false;
 
         while (!val){
-            System.out.println("1. register a consumer user.\n" + "2.register a producer user \n" + "3. register song or Podcast\n" + "4.register playlist\n"+"5.edit playlist\n"+"6.out ");
+            System.out.println("1. register a consumer user.\n" + "2.register a producer user \n" + "3. register song or Podcast\n" + "4.register playlist\n"+"5.edit playlist\n"+"6.share playlist\n"+"7.out ");
             int option = lector.nextInt();
             lector.nextLine();
             switch (option){
@@ -53,6 +53,8 @@ public class App{
                      objMain.editPlaylist();
                      break;
                 case 6:
+                     objMain.sharecode();
+                case 7:
                      val = true;
                      break;
                 default:
@@ -129,8 +131,10 @@ public class App{
         String name= lector.next();
         System.out.println("enter the url with a picture");
         String url= lector.next();
-        System.out.println("enter of duration of audio");
-        String duration=lector.next();
+        System.out.println("records the minutes of the audio");
+        int minutes=lector.nextInt();
+        System.out.println("records the seconds of the audio");
+        int seconds=lector.nextInt();
         System.out.println("Enter what type of audio is going to enter, 1. Song.2. podcast");
         int option= lector.nextInt();
         switch(option){
@@ -145,7 +149,7 @@ public class App{
                 System.out.println("you must enter an available option");
              }
              else{
-                System.out.println(musicApp.registerAudio(nickname, name, url, duration, album, price, typeSong));
+                System.out.println(musicApp.registerAudio(nickname, name, url, minutes,seconds, album, price, typeSong));
              }
 
              break;
@@ -154,7 +158,7 @@ public class App{
               String description=lector.next();
               System.out.println("enter the type of podcast.1.Politic,2.Entertaiment,3.Fashion,4.Videogame");
              int typePodcast=lector.nextInt();
-             System.out.println(musicApp.registerAudio(nickname, name, url, duration, typePodcast, description));
+             System.out.println(musicApp.registerAudio(nickname, name, url, minutes,seconds, typePodcast, description));
              break;
             default:
             System.out.println("you must enter an available option");
@@ -174,16 +178,9 @@ public class App{
         String nickname=lector.next();
         System.out.println("enter the name of playlist");
         String name= lector.next();
-        System.out.println("Enter the type of playlist you want,1.only songs,2.only podcasts or 3. podcast and songs");
-        int option= lector.nextInt();
-        if(option>4|| option<1){
-            System.out.println("you must enter an available option");
-        }
-        else{
-            System.out.println(musicApp.registerPlaylist(nickname, name, option));
+            System.out.println(musicApp.registerPlaylist(nickname, name));
         }
 
-    }
      /**
     * editPlaylist
     *the game is created
@@ -210,6 +207,17 @@ public class App{
             System.out.println("you must enter an available option");
          }
     }
+
+    public void sharecode(){
+        System.out.println("enter the nickname of user standard or premium");
+        String nickname=lector.next();
+        System.out.println("enter the name of the playlist");
+        String namePlaylist=lector.next();
+        System.out.println(musicApp.shareplaylis(nickname, namePlaylist));
+
+    }
+
+
 
 
 

@@ -28,7 +28,7 @@ public class Premium extends Consumer {
      * @return boolean
      */
     @Override
-    public boolean addPlaylist(String name, int[][] matriz, String code,int option){
+    public boolean addPlaylist(String name, int[][] matriz){
         boolean msg = true;
         Playlist objP = searchPlaylist(name);
 
@@ -36,7 +36,7 @@ public class Premium extends Consumer {
             msg = false;
         } 
         else {
-          playlist.add(new Playlist(name, matriz, code, option));       
+          playlist.add(new Playlist(name, matriz));       
              }
 
         return msg;
@@ -78,16 +78,14 @@ public class Premium extends Consumer {
      * @return String
      */
     @Override
-    public String addAudioPlaylist(String namePlaylist,int typeAudio, Audio audio){
+    public String addAudioPlaylist(String namePlaylist, Audio audio){
         String msg="";
          Playlist objP=searchPlaylist(namePlaylist);
          if(objP==null){
             msg="dont exist the playslist";
          }
          else{
-            if(objP.typePlaylist()==1){
-                if(objP.typePlaylist()==typeAudio){
-                    boolean audiorepit=searchAudioPlaylist(audio, objP);
+            boolean audiorepit=searchAudioPlaylist(audio, objP);
                     if(audiorepit){
                         objP.getAudios().add(audio);
                     }
@@ -95,36 +93,7 @@ public class Premium extends Consumer {
                         msg="the audio is repit";
                     }
                 }
-                else{
-                    msg="you cant add this audio beacuse is difertent type of playlist";
-                }
-            }
-            if(objP.typePlaylist()==2){
-                if(objP.typePlaylist()==typeAudio){
-                    boolean audiorepit=searchAudioPlaylist(audio, objP);
-                    if(audiorepit){
-                        objP.getAudios().add(audio);
-                    }
-                    else{
-                        msg="the audio is repit";
-                    }
-                }
-                else{
-                    msg="you cant add this audio beacuse is difertent type of playlist";
-                }
-            }
-            if(objP.typePlaylist()==3){
-                
-                    boolean audiorepit=searchAudioPlaylist(audio, objP);
-                    if(audiorepit){
-                        objP.getAudios().add(audio);
-                    }
-                    else{
-                        msg="the audio is repit";
-                    }
-            }
-         }
-        
+    
         return msg;
      }
 
@@ -192,6 +161,96 @@ public class Premium extends Consumer {
        return msg;
      }
 
+    
+
+     @Override
+
+     public String generateCode(int[][]matriz,int typePlaylist){
+        String code=null;
+         switch(typePlaylist){
+          case 1:
+           for(int i=5;i<0;i--){
+              code+=matriz[i][0];
+           }
+           for(int j=1, h=1;j>4 && h>4;j++,h++){
+              code+=matriz[j][h];
+           }
+           for(int k=5;k<0;k--){
+              code+=matriz[k][5];
+           }
+          break;
+  
+          case 2:
+           for(int i=0;i<2;i++){
+              code+=matriz[0][i];
+           }
+           for(int j=1;j<5;j++){
+              code+=matriz[j][2];
+           }
+           for(int h=2;h<4;h++){
+              code+=matriz[5][h];
+           } 
+           for(int k=4;k<0;k--){
+              code+=matriz[k][3];
+           }
+           for(int u=3;u>5;u++){
+              code+=matriz[0][u];
+           }
+  
+           break;
+             
+           case 3:
+           for (int i=5;i>=0;i--){
+              for(int j=5;j>=0;j--){
+                  int sum = i+j;
+                  if (sum%2!=0){
+                      if(sum!=1){
+                          code+=matriz[i][j]+" ";
+                      }
+                  }
+  
+              }
+          }
+           break;
+  
+  
+         }
+  
+        return code;
+      }
+
+
+
+    @Override
+    public String sharePlaylist(String namePlaylist) {
+        String msg="";
+         Playlist objP=searchPlaylist(namePlaylist);
+         if(objP==null){
+            msg="dont exist the playslist";
+         }
+         else{
+          char val=objP.analyticsPlaylist();
+           if(val=='n'){
+            msg="there are no songs in the playlist so it cannot generate a code";
+           }
+           else if(val=='t'){
+            msg=objP.getCode();
+           }
+           else if(val=='f'){
+            objP.changeTypePlaylist();
+            objP.setCode(generateCode(objP.getMatriz(),objP.typePlaylist() ));
+            msg=objP.getCode();
+           }
+
+         }
+        return msg;
+    }
+     
+
+      
+
+
+  
      
 
     

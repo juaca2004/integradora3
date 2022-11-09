@@ -11,22 +11,12 @@ public class Playlist{
     private TypePlaylist typePlaylist;
 
 
-    public Playlist(String name, int[][] matriz, String code,int option) {
+    public Playlist(String name, int[][] matriz) {
         this.name = name;
         this.matriz = matriz;
-        this.code = code;
+        typePlaylist=null;
+        code=null;
         audios= new ArrayList<Audio>();
-        switch(option){
-            case 1:
-            typePlaylist=TypePlaylist.SONG ;
-            break;
-            case 2:
-            typePlaylist=TypePlaylist.PODCAST ;
-            break;
-            case 3:
-            typePlaylist=TypePlaylist.SONGPODCAST;
-            break;
-        }
     }
 
 
@@ -102,13 +92,17 @@ public class Playlist{
     }
 
 
-    
-    /** 
-     * @return TypePlaylist
-     */
-    public TypePlaylist getTypePlaylist() {
+
+
+   
+     
+     /** 
+      * @return TypePlaylist
+      */
+     public TypePlaylist getTypePlaylist() {
         return typePlaylist;
     }
+
 
 
     
@@ -118,10 +112,72 @@ public class Playlist{
     public void setTypePlaylist(TypePlaylist typePlaylist) {
         this.typePlaylist = typePlaylist;
     }
-
-
     
-    /** 
+
+     public char analyticsPlaylist(){
+        char val= 'n';
+        TypePlaylist route;
+        int song=0;
+        int podcast=0;
+        if(audios.size()==0){
+            val= 'n';
+        }
+        else{
+            for(int i=0; i<audios.size();i++){
+                if(audios .get(i) instanceof Song){
+                 song++;
+               }
+               else{
+                  podcast++;
+               }
+              }
+      
+              if(song==0 && podcast!=0){
+                 route=TypePlaylist.PODCAST;
+               } 
+               else if(song!=0 && podcast==0){
+                route=TypePlaylist  .SONG;
+               }
+                else{
+                route=TypePlaylist  .SONGPODCAST;
+                }
+
+            if(route!=typePlaylist){
+                val='f';
+            }
+            else if(route==typePlaylist){
+                val='t';
+            }
+        }
+        return val;
+     }
+
+     public void changeTypePlaylist(){
+        int song=0;
+        int podcast=0;
+        for(int i=0; i<audios.size();i++){
+            if(audios .get(i) instanceof Song){
+             song++;
+           }
+           else{
+              podcast++;
+           }
+          }
+  
+          if(song==0 && podcast!=0){
+             typePlaylist=TypePlaylist.PODCAST;
+           } 
+           else if(song!=0 && podcast==0){
+            typePlaylist=TypePlaylist  .SONG;
+           }
+            else{
+                typePlaylist=TypePlaylist  .SONGPODCAST;
+            }
+    
+     }
+
+
+         /** 
     *typePlaylist
     *the method return a number depend of the playlist type
     *<b>pre:</b> the object is created.<br>
@@ -138,18 +194,9 @@ public class Playlist{
                 return 3;
             default:
              return 0;
-     }   
+     }  
+
     }
 
-
-
-
-
-
-    
-    
-    
-    
-
-
 }
+

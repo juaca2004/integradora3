@@ -102,7 +102,7 @@ public class MusicApp {
      * @param option
      * @return String
      */
-    public String  registerAudio(String nickname,String name, String url, String duration,String album,double price,int option){
+    public String  registerAudio(String nickname,String name, String url, int minutes,int second,String album,double price,int option){
         String msg = "song created";
         User objU = searchUser(nickname);
 
@@ -116,7 +116,7 @@ public class MusicApp {
                  }
 
                  else{
-                    audios.add(new Song(name, url, duration, album, price, option));
+                    audios.add(new Song(name, url, totaltime(minutes, second), album, price, option));
                     Artist objArtist = (Artist) objU;
                     objArtist.getSongs().add((Song) audios.get(audios.size()-1));
                  }
@@ -142,7 +142,7 @@ public class MusicApp {
      * @param description
      * @return String
      */
-    public String  registerAudio(String nickname,String name, String url, String duration,int option,String description){
+    public String  registerAudio(String nickname,String name, String url, int minutes,int second,int option,String description){
         String msg = "podcast created";
         User objU = searchUser(nickname);
 
@@ -156,7 +156,7 @@ public class MusicApp {
                  }
 
                  else{
-                    audios.add(new Podcast(name, url, duration, description, option));
+                    audios.add(new Podcast(name, url, totaltime(minutes, second), description, option));
                     Creator objcCreator = (Creator) objU;
                     objcCreator.getPodcasts().add((Podcast) audios.get(audios.size()-1));
                  }
@@ -166,6 +166,11 @@ public class MusicApp {
              }
         }
         return msg;
+    }
+
+    public int totaltime(int minutes,int second){
+        int time;
+        return time=(minutes*60)+second;
     }
 
     
@@ -179,7 +184,7 @@ public class MusicApp {
      * @param option
      * @return String
      */
-    public String registerPlaylist(String nickname,String name,int option){
+    public String registerPlaylist(String nickname,String name){
         String msg = "Playslist created";
         User objU = searchUser(nickname);
 
@@ -188,18 +193,16 @@ public class MusicApp {
         } else {
             if(objU instanceof Standard){
                 int [][]matriz=generateMatriz();
-                String code= generateCode(option, matriz);
                 Standard objStandard = (Standard) objU;
-                boolean val=objStandard.addPlaylist(name, matriz, code, option);
+                boolean val=objStandard.addPlaylist(name, matriz);
                 if(val==false){
                   msg="the playlist exist";
                 }
           }
           else if(objU instanceof Premium){
-            int [][]matriz=generateMatriz();
-            String code= generateCode(option, matriz);
+            int [][]matriz=generateMatriz();;
             Premium objPremium = ( Premium) objU;
-            boolean val=objPremium.addPlaylist(name, matriz, code, option);
+            boolean val=objPremium.addPlaylist(name, matriz);
             if(val==false){
               msg="the playlist exist";
             }
@@ -309,68 +312,7 @@ public class MusicApp {
 
 
     
-    /** 
-    *generateCode
-    *the method generate a code with a matriz and option passed by parameter
-    *<b>pre:</b> the paramatrer was pass.<br>
-    *<b>post:</b> The method returns the code like string
-     * @param option
-     * @param int[][]matriz
-     * @return String
-     */
-    public String generateCode(int option,int[][]matriz){
-      String code=null;
-       switch(option){
-        case 1:
-         for(int i=5;i<0;i--){
-            code+=matriz[i][0];
-         }
-         for(int j=1, h=1;j>4 && h>4;j++,h++){
-            code+=matriz[j][h];
-         }
-         for(int k=5;k<0;k--){
-            code+=matriz[k][5];
-         }
-        break;
 
-        case 2:
-         for(int i=0;i<2;i++){
-            code+=matriz[0][i];
-         }
-         for(int j=1;j<5;j++){
-            code+=matriz[j][2];
-         }
-         for(int h=2;h<4;h++){
-            code+=matriz[5][h];
-         } 
-         for(int k=4;k<0;k--){
-            code+=matriz[k][3];
-         }
-         for(int u=3;u>5;u++){
-            code+=matriz[0][u];
-         }
-
-         break;
-           
-         case 3:
-         for (int i=5;i>=0;i--){
-            for(int j=5;j>=0;j--){
-                int sum = i+j;
-                if (sum%2!=0){
-                    if(sum!=1){
-                        code+=matriz[i][j]+" ";
-                    }
-                }
-
-            }
-        }
-         break;
-
-
-       }
-
-      return code;
-    }
 
     
     /**
@@ -392,28 +334,19 @@ public class MusicApp {
          msg="the song dont exist";
         }
         else{
-         int typeauido;
-         if(objA instanceof Song){
-             typeauido=1;
-         }
-         else{
-             typeauido=2;
-         }
          User objU=searchUser(nickname);
          if(objU==null){
              msg="the user dont exist";
          }
          else{
             if(option==1){
-
-            
               if(objU instanceof Standard){
                  Standard obj = (Standard) objU; 
-                 msg=obj.addAudioPlaylist(namePlaylist, typeauido, objA);
+                 msg=obj.addAudioPlaylist(namePlaylist, objA);
               }
               else if(objU instanceof Premium){
                  Premium obj = (Premium) objU; 
-                 msg=obj.addAudioPlaylist(namePlaylist, typeauido, objA);
+                 msg=obj.addAudioPlaylist(namePlaylist, objA);
               }
               else {
                 msg="this user is not premiun or standard";
@@ -440,7 +373,31 @@ public class MusicApp {
           
         return msg;
     }
+    
 
+
+    public String shareplaylis(String nickname,String namePlaylist){
+      String code=" ";
+      User objU = searchUser(nickname);
+
+      if (objU == null) {
+          code = "the user doesn't exist";
+      } else {
+        if(objU instanceof Standard){
+            Standard obj = (Standard) objU; 
+             code=obj.sharePlaylist(namePlaylist);
+        }
+        else if(objU instanceof Premium){
+            Premium obj = ( Premium) objU; 
+            obj.sharePlaylist(namePlaylist);
+        }
+        else{
+            code="you must enter a user type consumer";
+        }
+      }
+
+      return code;
+    }
 
 
    

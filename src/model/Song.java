@@ -8,7 +8,7 @@ public class Song extends Audio{
     private Types_Song typeSong;
   
 
-    public Song(String name, String url, String duration,String album, double price, int option){
+    public Song(String name, String url, int duration,String album, double price, int option){
         super(name,url,duration);
         this.album = album;
         this.price = price;
