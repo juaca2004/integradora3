@@ -1,7 +1,8 @@
 package model;
-
+//* */
 public interface Playing{
-    public boolean play();
+
+    public String play(Audio audio);
 }
   
 

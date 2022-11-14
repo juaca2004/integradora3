@@ -1,7 +1,7 @@
 package model;
 //* */
 
-public class Audio{
+public class Audio {
     private String name;
     private String url;
     private int duration;
@@ -86,6 +86,11 @@ public class Audio{
     public void setView(int view) {
         this.view = view;
     }
+
+
+
+
+
 
     
 

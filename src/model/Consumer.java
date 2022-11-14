@@ -21,8 +21,13 @@ public abstract class Consumer extends User {
     public abstract  String generateCode(int[][]matrizint,int typePlaylist);
 
     public abstract String sharePlaylist(String namePlaylist);
+   
+    public abstract String sharePlaylistMatriz(String namePlaylist);
 
+    public abstract String printMatrix(int[][] matrix);
 
-    
-    
+    public abstract String mostSongViews();
+
+    public abstract String mostPodcastViews();
+   
 }

@@ -98,6 +98,58 @@ public class Song extends Audio{
     public void setTypeSong(Types_Song typeSong) {
         this.typeSong = typeSong;
     }
+
+    
+    /** 
+    *typeSong
+    *the method return a number depend of the song type
+    *<b>pre:</b> the object is created.<br>
+    *<b>post:</b> The method returns a int
+     * @return int
+     */
+    public int typeSong(){
+        switch (typeSong) {
+            case ROCK:
+                return 1;
+            case POP:
+                return 2;
+            case TRAP:
+                return 3;
+            case HOUSE:
+                return 4;
+            default:
+             return 0;
+     }  
+
+    }
+
+    
+    /** 
+            *typeStringSong
+    *the method return a String with the type of psong
+    *<b>pre:</b> the object is created.<br>
+    *<b>post:</b> The method returns a String
+     * @return String
+     */
+    public String typeStringSong(){
+        String  msj = ""; 
+        switch(typeSong){
+        case ROCK:
+            msj = "rock";
+            return msj;
+        case POP:
+            msj = "pop";
+            return msj;
+        case TRAP:
+             msj = "trap";
+            return msj;
+        case HOUSE:
+            msj = "house"; 
+            return msj;
+        default:
+            return null; 
+        }
+    }
     
 
     

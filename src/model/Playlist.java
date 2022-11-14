@@ -114,6 +114,14 @@ public class Playlist{
     }
     
 
+     
+     /** 
+          *analyticsPlaylist
+    *the method return a char is there are a change of type of playlist
+    *<b>pre:</b> the object is created.<br>
+    *<b>post:</b> The method returns a char
+      * @return char
+      */
      public char analyticsPlaylist(){
         char val= 'n';
         TypePlaylist route;
@@ -151,7 +159,12 @@ public class Playlist{
         }
         return val;
      }
-
+     /** 
+          *changeTypePlaylist
+    *the method cahnge the tyoe of playlist
+    *<b>pre:</b> the object is created.<br>
+      * @return char
+      */
      public void changeTypePlaylist(){
         int song=0;
         int podcast=0;

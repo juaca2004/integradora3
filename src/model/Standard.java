@@ -2,14 +2,18 @@ package model;
 
 import java.util.Calendar;
 import java.util.ArrayList;
+import java.util.Random;
 
 //* */
-public class Standard  extends Consumer{
+public class Standard  extends Consumer implements Playing{
     private Playlist[] playlist;
+    private ArrayList <Audio> audios;
 
     public Standard(String nickname, String id, Calendar bondingdate) {
         super(nickname, id, bondingdate);
         playlist= new Playlist[20];
+        audios= new ArrayList<Audio>();
+
     }
 
     
@@ -116,6 +120,7 @@ public class Standard  extends Consumer{
               boolean audiorepit=searchAudioPlaylist(audio, objP);
                       if(audiorepit){
                           objP.getAudios().add(audio);
+                          msg="the audio added with exit";
                       }
                       else{
                           msg="the audio is repit";
@@ -191,38 +196,45 @@ public class Standard  extends Consumer{
      }
 
 
+    
+    /** 
+       *generateCode
+    *this methot generate code depending of matriz and type of playlist
+    *<b>pre:</b> the paramatrers was enter with exit.<br>
+    *<b>post:</b> returns a String is the was exit
+     * @param int[][]matriz
+     * @param typePlaylist
+     * @return String
+     */
     @Override
     public String generateCode(int[][]matriz,int typePlaylist){
-        String code=null;
+        String code="";
          switch(typePlaylist){
           case 1:
-           for(int i=5;i<0;i--){
-              code+=matriz[i][0];
-           }
-           for(int j=1, h=1;j>4 && h>4;j++,h++){
-              code+=matriz[j][h];
-           }
-           for(int k=5;k<0;k--){
-              code+=matriz[k][5];
-           }
-          break;
+          for (int i = matriz.length; i > 0; i--) { // Gets the values of the first column of the matrix
+            code += matriz[i - 1][0];
+          }
+              for (int i = 1, j = 1; i < matriz.length -1; i++, j++) { // Gets the values of the diagonal of the matrix           
+                code+= matriz[i][j];      	
+              }
+          for (int i = matriz.length; i > 0; i--) { // Gets the values of the last column of the matrix
+            code += matriz[i - 1][matriz[0].length - 1];
+          }
+           break;
   
           case 2:
-           for(int i=0;i<2;i++){
-              code+=matriz[0][i];
-           }
-           for(int j=1;j<5;j++){
-              code+=matriz[j][2];
-           }
-           for(int h=2;h<4;h++){
-              code+=matriz[5][h];
-           } 
-           for(int k=4;k<0;k--){
-              code+=matriz[k][3];
-           }
-           for(int u=3;u>5;u++){
-              code+=matriz[0][u];
-           }
+          for (int j = 0; j < matriz.length -4; j++) { // Gets the values of the first row, since column zero until column two
+            code+= matriz[0][j];
+          }
+          for (int i = 0; i < matriz.length; i++) { // Gets the values of the column two
+            code += matriz[i][2];
+          }
+          for (int i = matriz.length; i > 0; i--) { // Gets the values of the column three
+            code += matriz[i - 1][3];
+          }
+          for (int j = matriz.length -2; j < matriz.length; j++ ) { // Gets the values of the first row, since column four until column five
+            code += matriz[0][j];
+          }
   
            break;
              
@@ -247,6 +259,15 @@ public class Standard  extends Consumer{
       }
 
 
+    
+    /** 
+                 *sharePlaylist
+    *this methot share the playlist
+    *<b>pre:</b> the paramatrers was enter with exit.<br>
+    *<b>post:</b> returns a String is the was exit
+     * @param namePlaylist
+     * @return String
+     */
     @Override
     public String sharePlaylist(String namePlaylist) {
         String msg="";
@@ -264,13 +285,255 @@ public class Standard  extends Consumer{
           }
           else if(val=='f'){
            objP.changeTypePlaylist();
-           objP.setCode(generateCode(objP.getMatriz(),objP.typePlaylist() ));
+          objP.setCode(generateCode(objP.getMatriz(),objP.typePlaylist() ));
            msg=objP.getCode();
           }
 
         }
        return msg;
     }
+    
+   
+   /** 
+        *sharePlaylistMatriz
+    *this methot show the matrix
+    *<b>pre:</b> the paramatrers was enter with exit.<br>
+    *<b>post:</b> returns a String is the was exit
+    * @param namePlaylist
+    * @return String
+    */
+   @Override
+    public String sharePlaylistMatriz(String namePlaylist){
+      String msg=" ";
+      Playlist objP=searchPlaylist(namePlaylist);
+      if(objP==null){
+         msg=" ";
+      }
+      else{
+        msg= printMatrix(objP.getMatriz());
+      }
+
+      return msg;
+    }
+
+
+    
+    /** 
+              *printMatrix
+    *this methot print the matrix
+    *<b>pre:</b> the paramatrers was enter with exit.<br>
+    *<b>post:</b> returns a String is the was exit
+     * @param matrix
+     * @return String
+     */
+    @Override
+    public String printMatrix(int[][] matrix) {
+      String print = "";
+      for (int i = 0; i < matrix.length; i++) { // filas numbers.length
+        for (int j = 0; j < matrix[0].length; j++) { // columnas numbers[0].length
+          print += matrix[i][j] + " ";
+        }
+        print += "\n";
+      }
+  
+      return print;
+    }
+  
+    
+    /** 
+     * @return int
+     */
+    public int generateNumber(){
+        
+      Random r= new Random();
+    
+      int value = r.nextInt(2 + 1) + 1;
+    
+     return value;
+    
+    }
+   
+   
+   /** 
+        *sharePlaylist
+    *this methot add a reproduction 
+    *<b>pre:</b> the paramatrers was enter with exit.<br>
+    *<b>post:</b> returns a String is the was exit
+    * @param audio
+    * @return String
+    */
+   @Override
+    public String play(Audio audio){
+      String msg="."+"\n"+"."+"\n"+"."+"\n"+"the audio is playing"+"\n";
+      if(audios.size()==0){
+       
+      }
+      else{
+        int reproduction=audios.size();
+        String ad1="add time"+"\n"+"Nike - Just Do It.";
+        String ad2="add time"+"\n"+"Coca-Cola - Open Happiness";
+        String ad3="add time"+"\n"+"M&Ms - Melts in Your Mouth, Not in Your Hands";
+        if(reproduction%2==0){
+          int number=generateNumber();
+          switch(number){
+            case 1:
+            msg+=ad1;
+            audios.add(audio);
+            break;
+            case 2:
+            msg+=ad2;
+            audios.add(audio);
+            break;
+            case 3:
+            msg+=ad3;
+            audios.add(audio);
+            break;
+          }
+        }
+        else{
+          audios.add(audio);
+        }
+
+      }
+     
+      return msg;
+    }
+
+
+    
+    /** 
+              *mostSongViews
+    *this methot show the most song view in this user 
+    *<b>pre:</b> the paramatrers was enter with exit.<br>
+    *<b>post:</b> returns a String is the was exit
+     * @return String
+     */
+    public String mostSongViews(){
+      String msg="";
+      int [] geners= {0,0,0,0};
+      int position=0;
+       if(audios.size()!=0){
+         for(int i=0; i<audios.size();i++){
+           if(audios.get(i) instanceof Song){
+             Song song = ( (Song)(audios.get(i)) );
+             switch(song.typeSong()){
+               case 1:
+                geners[0]++;
+                break;
+               case 2:
+               geners[1]++;
+                break;
+               case 3:
+               geners[2]++;
+                break;
+               case 4:
+               geners[3]++;
+                break;
+               default:
+                break;
+             }
+           }
+         }
+         int mayor=0;
+          for(int i=0; i<4;i++){
+           if(geners[i]>mayor){
+             position=i;
+           }
+          }
+         switch(position){
+           case 0:
+           msg="the most listened to genre for this user: rock \n"+"views: "+geners[position];
+           break;
+           case 1:
+           msg="the most listened to genre for this user: pop \n"+"views: "+geners[position];
+           break;
+           case 2:
+           msg="the most listened to genre for this user: trap \n"+"views: "+geners[position];
+           break;
+           case 3:
+           msg="the most listened to genre for this user: house \n"+"views: "+geners[position];
+           break;
+           case 4:
+           msg="the dont exist song";
+           break;
+         }
+         
+       }
+       else{
+         msg="the user dont have reproduction";
+       }
+      return msg;
+     }
+
+
+     
+     /** 
+                    *mostPodcastViews
+    *this methot show the most song view in this user 
+    *<b>pre:</b> the paramatrers was enter with exit.<br>
+    *<b>post:</b> returns a String is the was exit
+      * @return String
+      */
+     public String mostPodcastViews(){
+      String msg="";
+      int [] geners= {0,0,0,0};
+      int position=0;
+       if(audios.size()!=0){
+         for(int i=0; i<audios.size();i++){
+           if(audios.get(i) instanceof Podcast){
+            Podcast podcast = ( (Podcast)(audios.get(i)) );
+             switch(podcast.typePodcast()){
+               case 1:
+                geners[0]++;
+                break;
+               case 2:
+               geners[1]++;
+                break;
+               case 3:
+               geners[2]++;
+                break;
+               case 4:
+               geners[3]++;
+                break;
+               default:
+                break;
+             }
+           }
+         }
+         int mayor=0;
+          for(int i=0; i<4;i++){
+           if(geners[i]>mayor){
+             position=i;
+           }
+          }
+         switch(position){
+           case 0:
+           msg="the most listened to genre for this user: Politic \n"+"views: "+geners[position];
+           break;
+           case 1:
+           msg="the most listened to genre for this user: Entertaiment \n"+"views: "+geners[position];
+           break;
+           case 2:
+           msg="the most listened to genre for this user: Fashion \n"+"views: "+geners[position];
+           break;
+           case 3:
+           msg="the most listened to genre for this user: Videogame \n"+"views: "+geners[position];
+           break;
+           case 4:
+           msg="the dont exist podcast";
+           break;
+         }
+         
+       }
+       else{
+         msg="the user dont have reproduction";
+       }
+      return msg;
+     }
+
+
+    
+
 
 
 
