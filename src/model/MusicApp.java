@@ -628,11 +628,11 @@ public String infoMostViewSong(String nickname){
 
         if(user instanceof Standard){
             Standard obj = (Standard) user; 
-             msj=mostSongViews() + obj.mostSongViews();
+             msj=mostSongViews() +"\n"+ obj.mostSongViews();
         }
         else if(user instanceof Premium){
             Premium obj = ( Premium) user; 
-            msj=mostSongViews() + obj.mostSongViews();
+            msj=mostSongViews() +"\n"+ obj.mostSongViews();
 
         }
         else{

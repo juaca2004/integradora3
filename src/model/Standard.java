@@ -143,24 +143,24 @@ public class Standard  extends Consumer implements Playing{
       @Override
      public boolean searchAudioPlaylist(Audio audio,Playlist playlist){
        boolean val=false;
-       if(playlist!=null){
-        val=true;
-       }
-       else{
-        boolean vali=false;
 
+      boolean vali=false;
+       if(playlist.getAudios().size()!=0){
         for(int i=0;i<playlist.getAudios().size()&&!vali;i++){
-            if(playlist.getAudios().get(i)==audio){
-                vali=true;
-            }
-            if(i==playlist.getAudios().size()-1){
-                val=true;
-            }
-        }
+          if(playlist.getAudios().get(i)==audio){
+              vali=true;
+          }
+       }
+      }
+      else{
+        val=true;
+      }
+        return val;
        }
         
-       return val;
-     }
+
+
+    
 
      
      /** 
